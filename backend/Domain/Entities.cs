@@ -38,6 +38,7 @@ public class User : BaseEntity
     public bool IsActive { get; set; } = true;
     public Guid RoleId { get; set; }
     public Role Role { get; set; } = null!;
+    public ICollection<AttendanceRecord> AttendanceRecords { get; set; } = new List<AttendanceRecord>();
 }
 
 public class Category : BaseEntity
@@ -148,4 +149,27 @@ public class AuditLog : BaseEntity
     public string Path { get; set; } = "";
     public int StatusCode { get; set; }
     public string? IpAddress { get; set; }
+}
+
+public class AttendanceSetting : BaseEntity
+{
+    public TimeOnly WorkStartTime { get; set; } = new(9, 0);
+    public TimeOnly LateAfterTime { get; set; } = new(9, 15);
+    public TimeOnly WorkEndTime { get; set; } = new(17, 0);
+    public TimeOnly AutoCheckoutTime { get; set; } = new(18, 0);
+    public string TimeZoneId { get; set; } = "Asia/Dhaka";
+    public string WorkingDays { get; set; } = "Sunday,Monday,Tuesday,Wednesday,Thursday";
+    public bool IsAutoCheckoutEnabled { get; set; } = true;
+}
+
+public class AttendanceRecord : BaseEntity
+{
+    public Guid UserId { get; set; }
+    public User User { get; set; } = null!;
+    public DateOnly AttendanceDate { get; set; }
+    public DateTime CheckInAt { get; set; }
+    public DateTime? CheckOutAt { get; set; }
+    public string Status { get; set; } = "Present";
+    public string? CheckOutType { get; set; }
+    public string? Note { get; set; }
 }

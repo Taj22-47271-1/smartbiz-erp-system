@@ -142,3 +142,42 @@ tr:last-child td { border-bottom:0; }
   .search { width:100%; }
   .line-item { grid-template-columns:1fr; }
 }
+
+/* Attendance module */
+.attendance-hero { padding: 24px; display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-bottom: 18px; }
+.attendance-hero h2 { margin: 0; font-size: 28px; letter-spacing: -.6px; }
+.attendance-status-row { display: flex; align-items: center; gap: 10px; margin: 8px 0 14px; }
+.attendance-meta { display: flex; flex-wrap: wrap; gap: 8px 18px; color: var(--muted); font-size: 12px; }
+.secondary-meta { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line); }
+.attendance-actions { min-width: 150px; display: grid; place-items: center; }
+.attendance-main-button { min-width: 138px; padding: 13px 18px; font-size: 14px; }
+.attendance-section { margin-bottom: 18px; }
+.attendance-kpis { margin-top: 14px; }
+.compact-card-body { padding: 14px 20px 20px; }
+.section-title-row { display: flex; align-items: end; justify-content: space-between; margin: 28px 0 4px; }
+.section-title-row h2 { margin: 5px 0 0; font-size: 20px; }
+.date-control { border: 1px solid var(--line); background: #fff; border-radius: 10px; padding: 9px 11px; outline: none; color: var(--text); }
+.date-control:focus { border-color: #9db0ed; box-shadow: 0 0 0 3px #eef2ff; }
+.attendance-time-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.working-days { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; }
+.day-check { justify-content: center; text-align: center; }
+.auto-checkout-check { max-width: 500px; }
+.table-subtext { color: var(--muted); font-size: 11px; }
+.badge.danger { background: #fff1f0; color: var(--danger); }
+
+@media (max-width: 1050px) {
+  .attendance-time-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .working-days { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+@media (max-width: 780px) {
+  .attendance-hero { align-items: stretch; flex-direction: column; }
+  .attendance-actions { place-items: stretch; }
+  .attendance-main-button { width: 100%; }
+  .working-days { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (max-width: 560px) {
+  .attendance-time-grid, .working-days { grid-template-columns: 1fr; }
+  .card-head { align-items: stretch; flex-direction: column; }
+}

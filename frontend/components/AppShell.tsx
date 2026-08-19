@@ -5,16 +5,24 @@ import { usePathname, useRouter } from "next/navigation";
 import { ReactNode, useEffect, useState } from "react";
 import { getStoredUser, getToken, logout } from "@/lib/api";
 
-const nav = [
-  { href: "/dashboard", label: "Dashboard", icon: "◫", permission: "dashboard.view" },
-  { href: "/products", label: "Products", icon: "▦", permission: "products.manage" },
-  { href: "/customers", label: "Customers", icon: "◎", permission: "customers.manage" },
-  { href: "/suppliers", label: "Suppliers", icon: "◇", permission: "suppliers.manage" },
-  { href: "/purchases", label: "Purchases", icon: "↓", permission: "purchases.manage" },
-  { href: "/sales", label: "Sales", icon: "↑", permission: "sales.manage" },
-  { href: "/expenses", label: "Expenses", icon: "৳", permission: "expenses.manage" },
-  { href: "/users", label: "Users", icon: "♙", permission: "users.manage" },
-  { href: "/roles", label: "Roles", icon: "⚿", permission: "users.manage" }
+type NavItem = {
+  href: string;
+  label: string;
+  icon: string;
+  permissions: string[];
+};
+
+const nav: NavItem[] = [
+  { href: "/dashboard", label: "Dashboard", icon: "◫", permissions: ["dashboard.view"] },
+  { href: "/attendance", label: "Attendance", icon: "◷", permissions: ["attendance.checkin", "attendance.view"] },
+  { href: "/products", label: "Products", icon: "▦", permissions: ["products.manage"] },
+  { href: "/customers", label: "Customers", icon: "◎", permissions: ["customers.manage"] },
+  { href: "/suppliers", label: "Suppliers", icon: "◇", permissions: ["suppliers.manage"] },
+  { href: "/purchases", label: "Purchases", icon: "↓", permissions: ["purchases.manage"] },
+  { href: "/sales", label: "Sales", icon: "↑", permissions: ["sales.manage"] },
+  { href: "/expenses", label: "Expenses", icon: "৳", permissions: ["expenses.manage"] },
+  { href: "/users", label: "Users", icon: "♙", permissions: ["users.manage"] },
+  { href: "/roles", label: "Roles", icon: "⚿", permissions: ["users.manage"] }
 ];
 
 export default function AppShell({ children, title }: { children: ReactNode; title: string }) {
@@ -30,6 +38,9 @@ export default function AppShell({ children, title }: { children: ReactNode; tit
     setUser(getStoredUser());
   }, [router]);
 
+  const canSee = (item: NavItem) =>
+    !user?.permissions || item.permissions.some(permission => user.permissions.includes(permission));
+
   return (
     <div className="app-shell">
       <aside className="sidebar">
@@ -38,13 +49,15 @@ export default function AppShell({ children, title }: { children: ReactNode; tit
           <div><strong>SmartBiz</strong><span>ERP Suite</span></div>
         </div>
         <nav>
-          {nav
-            .filter(item => !user?.permissions || user.permissions.includes(item.permission))
-            .map(item => (
-              <Link key={item.href} href={item.href} className={pathname === item.href ? "nav-link active" : "nav-link"}>
-                <span className="nav-icon">{item.icon}</span>{item.label}
-              </Link>
-            ))}
+          {nav.filter(canSee).map(item => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={pathname === item.href ? "nav-link active" : "nav-link"}
+            >
+              <span className="nav-icon">{item.icon}</span>{item.label}
+            </Link>
+          ))}
         </nav>
         <div className="sidebar-foot">
           <div className="user-mini">

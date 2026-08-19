@@ -20,23 +20,27 @@ public class AdminController(AppDbContext db) : ControllerBase
         Ok(await db.Permissions.OrderBy(x => x.Key).Select(x => new { x.Id, x.Key, x.Description }).ToListAsync());
 
     [HttpGet("roles")]
-public async Task<IActionResult> Roles()
-{
-    var roles = await db.Roles
-        .OrderBy(x => x.Name)
-        .Select(x => new
+    public async Task<IActionResult> Roles()
+    {
+        var roles = await db.Roles
+            .AsNoTracking()
+            .Include(x => x.RolePermissions)
+            .ThenInclude(x => x.Permission)
+            .OrderBy(x => x.Name)
+            .ToListAsync();
+
+        return Ok(roles.Select(x => new
         {
             x.Id,
             x.Name,
             x.Description,
             Permissions = x.RolePermissions
                 .Select(rp => rp.Permission.Key)
+                .OrderBy(key => key)
                 .ToList()
-        })
-        .ToListAsync();
+        }));
+    }
 
-    return Ok(roles);
-}
     [HttpPost("roles")]
     public async Task<IActionResult> CreateRole(CreateRoleRequest request)
     {
