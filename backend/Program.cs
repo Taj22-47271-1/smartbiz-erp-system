@@ -38,7 +38,20 @@ builder.Services
         };
     });
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    // Reading the product catalogue is required by sales and purchase workflows,
+    // but it must not grant permission to create, edit, or delete products.
+    options.AddPolicy("products.read", policy =>
+    {
+        policy.RequireAuthenticatedUser();
+        policy.RequireAssertion(context =>
+            context.User.HasClaim("permission", "products.manage") ||
+            context.User.HasClaim("permission", "sales.manage") ||
+            context.User.HasClaim("permission", "purchases.manage"));
+    });
+});
+
 builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
 
 builder.Services.AddCors(options =>

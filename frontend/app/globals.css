@@ -181,3 +181,22 @@ tr:last-child td { border-bottom:0; }
   .attendance-time-grid, .working-days { grid-template-columns: 1fr; }
   .card-head { align-items: stretch; flex-direction: column; }
 }
+
+/* Account security / change password */
+.security-layout { max-width: 760px; margin: 0 auto; }
+.security-card { overflow: hidden; }
+.security-lock { width: 42px; height: 42px; border-radius: 12px; background: var(--brand-soft); color: var(--brand); display: grid; place-items: center; font-size: 20px; font-weight: 900; }
+.security-form { padding-top: 20px; }
+.account-strip { display: flex; align-items: center; gap: 12px; padding: 13px 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface-2); }
+.account-strip strong, .account-strip span { display: block; }
+.account-strip span { margin-top: 3px; color: var(--muted); font-size: 12px; }
+.security-avatar { flex: 0 0 auto; }
+.password-rules { display: flex; flex-wrap: wrap; gap: 7px; margin-top: -4px; }
+.password-rules span { padding: 5px 8px; border-radius: 999px; background: #f1f4f8; color: #758096; font-size: 11px; font-weight: 750; }
+.password-rules span.rule-ok { background: #ecf9f2; color: var(--success); }
+.password-match { margin-top: 6px; color: var(--danger); font-size: 11px; font-weight: 750; }
+.password-match.ok { color: var(--success); }
+.show-password-check { width: fit-content; background: #fff; }
+.security-note { padding: 11px 12px; border-radius: 10px; background: #f7f9fc; border: 1px solid var(--line); color: var(--muted); font-size: 12px; line-height: 1.55; }
+.security-actions { border-top: 1px solid var(--line); margin-top: 2px; padding-top: 16px; }
+.security-actions .primary-button:disabled { opacity: .55; cursor: not-allowed; }

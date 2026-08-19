@@ -6,7 +6,7 @@ using SmartBizERP.Api.Domain;
 
 namespace SmartBizERP.Api.Controllers;
 
-[Authorize(Policy = "permission:products.manage")]
+[Authorize]
 [ApiController]
 [Route("api/catalog")]
 public class CatalogController(AppDbContext db) : ControllerBase
@@ -20,10 +20,15 @@ public class CatalogController(AppDbContext db) : ControllerBase
         int ReorderLevel,
         Guid CategoryId);
 
+    [Authorize(Policy = "products.read")]
     [HttpGet("categories")]
     public async Task<IActionResult> Categories() =>
-        Ok(await db.Categories.OrderBy(x => x.Name).Select(x => new { x.Id, x.Name }).ToListAsync());
+        Ok(await db.Categories
+            .OrderBy(x => x.Name)
+            .Select(x => new { x.Id, x.Name })
+            .ToListAsync());
 
+    [Authorize(Policy = "permission:products.manage")]
     [HttpPost("categories")]
     public async Task<IActionResult> CreateCategory(CategoryRequest request)
     {
@@ -33,6 +38,7 @@ public class CatalogController(AppDbContext db) : ControllerBase
         return Ok(category);
     }
 
+    [Authorize(Policy = "products.read")]
     [HttpGet("products")]
     public async Task<IActionResult> Products() =>
         Ok(await db.Products
@@ -52,6 +58,7 @@ public class CatalogController(AppDbContext db) : ControllerBase
             })
             .ToListAsync());
 
+    [Authorize(Policy = "permission:products.manage")]
     [HttpPost("products")]
     public async Task<IActionResult> CreateProduct(ProductRequest request)
     {
@@ -77,6 +84,7 @@ public class CatalogController(AppDbContext db) : ControllerBase
         return Ok(product);
     }
 
+    [Authorize(Policy = "permission:products.manage")]
     [HttpPut("products/{id:guid}")]
     public async Task<IActionResult> UpdateProduct(Guid id, ProductRequest request)
     {
@@ -97,6 +105,7 @@ public class CatalogController(AppDbContext db) : ControllerBase
         return Ok(product);
     }
 
+    [Authorize(Policy = "permission:products.manage")]
     [HttpDelete("products/{id:guid}")]
     public async Task<IActionResult> DeleteProduct(Guid id)
     {

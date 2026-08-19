@@ -22,7 +22,8 @@ const nav: NavItem[] = [
   { href: "/sales", label: "Sales", icon: "↑", permissions: ["sales.manage"] },
   { href: "/expenses", label: "Expenses", icon: "৳", permissions: ["expenses.manage"] },
   { href: "/users", label: "Users", icon: "♙", permissions: ["users.manage"] },
-  { href: "/roles", label: "Roles", icon: "⚿", permissions: ["users.manage"] }
+  { href: "/roles", label: "Roles", icon: "⚿", permissions: ["users.manage"] },
+  { href: "/change-password", label: "Change Password", icon: "⌁", permissions: [] }
 ];
 
 export default function AppShell({ children, title }: { children: ReactNode; title: string }) {
@@ -39,7 +40,9 @@ export default function AppShell({ children, title }: { children: ReactNode; tit
   }, [router]);
 
   const canSee = (item: NavItem) =>
-    !user?.permissions || item.permissions.some(permission => user.permissions.includes(permission));
+    item.permissions.length === 0 ||
+    !user?.permissions ||
+    item.permissions.some(permission => user.permissions.includes(permission));
 
   return (
     <div className="app-shell">
